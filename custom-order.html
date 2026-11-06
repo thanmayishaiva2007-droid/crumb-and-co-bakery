@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Custom Cakes | Crumb & Co.</title>
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+body{background:#faf6ef}
+.top{background:#33231e;color:white;text-align:center;padding:10px;font-size:10px;letter-spacing:2px}
+.hero{background:#ead9c8;text-align:center;padding:65px 20px}
+.hero h1{font:48px 'Playfair Display';margin:12px}
+.hero p{font-size:13px;color:#79665a}
+.booking{max-width:950px;margin:55px auto;padding:40px;background:white;border:1px solid #eee5da;box-shadow:0 10px 35px #00000008}
+.booking h2{font:30px 'Playfair Display';margin-bottom:10px}
+.booking>p{font-size:12px;color:#96857b;margin-bottom:30px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.field{display:flex;flex-direction:column;gap:9px;margin-bottom:20px}
+.field label{font-size:11px;font-weight:700;color:#684333}
+.field input,.field select,.field textarea{padding:14px;border:1px solid #e6ddd2;background:#faf8f4;outline:none;width:100%;font-size:12px}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:#c08a5a}
+.field textarea{height:110px;resize:vertical}
+.full{grid-column:1/-1}
+.price-note{background:#f5e9dd;padding:18px;margin:20px 0;font-size:12px;line-height:1.8}
+.submit{width:100%;padding:17px;font-size:12px}
+.required{color:#b76e4f}
+@media(max-width:650px){
+.booking{margin:25px 12px;padding:23px}
+.form-grid{grid-template-columns:1fr}
+.full{grid-column:auto}
+.hero h1{font-size:36px}
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="top">MADE ESPECIALLY FOR YOUR SPECIAL MOMENTS ♡</div>
+
+<header>
+<a class="logo" href="index.html">crumb<span>&</span>co.</a>
+<nav>
+<a href="index.html">HOME</a>
+<a href="menu.html">MENU</a>
+<a href="about.html">OUR STORY</a>
+<a href="contact.html">CONTACT</a>
+</nav>
+<a class="btn" href="menu.html">SHOP NOW →</a>
+</header>
+
+<section class="hero">
+<div class="eyebrow">YOUR IDEA, OUR CREATIVITY</div>
+<h1>A cake as unique as your celebration.</h1>
+<p>Tell us your dream cake. We'll make it a little sweeter.</p>
+</section>
+
+<section class="booking">
+
+<div class="eyebrow">PERSONALISE YOUR CREATION</div>
+<h2>Let's design your cake.</h2>
+<p>Fill in the details below and our bakery team will receive your custom cake request.</p>
+
+<form onsubmit="submitCustomOrder(event)">
+
+<div class="form-grid">
+
+<div class="field">
+<label>Your Full Name <span class="required">*</span></label>
+<input type="text" name="customerName" placeholder="Enter your name" required>
+</div>
+
+<div class="field">
+<label>Email Address <span class="required">*</span></label>
+<input type="email" name="email" placeholder="you@example.com" required>
+</div>
+
+<div class="field">
+<label>Phone Number <span class="required">*</span></label>
+<input type="tel" name="phone" placeholder="Your contact number" pattern="[0-9+ ]{10,15}" required>
+</div>
+
+<div class="field">
+<label>Occasion <span class="required">*</span></label>
+<select name="occasion" required>
+<option value="">Select occasion</option>
+<option>Birthday</option>
+<option>Wedding</option>
+<option>Anniversary</option>
+<option>Engagement</option>
+<option>Baby Shower</option>
+<option>Other Celebration</option>
+</select>
+</div>
+
+<div class="field">
+<label>Cake Flavour <span class="required">*</span></label>
+<select name="flavour" required>
+<option value="">Choose flavour</option>
+<option>Chocolate</option>
+<option>Vanilla</option>
+<option>Red Velvet</option>
+<option>Strawberry</option>
+<option>Black Forest</option>
+<option>Butterscotch</option>
+</select>
+</div>
+
+<div class="field">
+<label>Cake Size <span class="required">*</span></label>
+<select name="size" required>
+<option value="">Choose size</option>
+<option>500g</option>
+<option>1kg</option>
+<option>1.5kg</option>
+<option>2kg</option>
+<option>3kg</option>
+</select>
+</div>
+
+<div class="field">
+<label>Preferred Cake Design</label>
+<select name="design">
+<option>Elegant Floral</option>
+<option>Minimalist</option>
+<option>Birthday Theme</option>
+<option>Wedding Style</option>
+<option>Cartoon Theme</option>
+<option>Photo Cake</option>
+<option>Custom Design</option>
+</select>
+</div>
+
+<div class="field">
+<label>Number of Guests</label>
+<input type="number" name="guests" min="1" placeholder="Approximate guests">
+</div>
+
+<div class="field">
+<label>Required Date <span class="required">*</span></label>
+<input type="date" name="date" id="cakeDate" required>
+</div>
+
+<div class="field">
+<label>Preferred Time</label>
+<input type="time" name="time">
+</div>
+
+<div class="field full">
+<label>Message on Cake</label>
+<input type="text" name="message" placeholder="Happy Birthday...">
+</div>
+
+<div class="field full">
+<label>Describe Your Dream Cake</label>
+<textarea name="details" placeholder="Tell us about colours, decorations, reference ideas and special requirements..."></textarea>
+</div>
+
+</div>
+
+<div class="price-note">
+✦ <b>A little note:</b> Final pricing depends on the cake size, design complexity and ingredients. Our team will confirm the quotation after reviewing your request.
+</div>
+
+<button type="submit" class="btn submit">SUBMIT MY CAKE REQUEST →</button>
+
+</form>
+</section>
+
+<footer>
+<div><h3 class="serif">crumb&co.</h3><p>Every bite tells a sweeter story. ♡</p></div>
+<div><h3>Explore</h3><p><a href="index.html">Home</a><br><a href="menu.html">Menu</a><br><a href="about.html">Our Story</a></p></div>
+<div><h3>Contact</h3><p>hello@crumbandco.in<br>Instagram · Pinterest</p></div>
+</footer>
+
+<div class="copyright">© 2026 CRUMB & CO. ALL RIGHTS RESERVED. ♡</div>
+
+<script>
+document.getElementById("cakeDate").min = new Date(Date.now()+86400000).toISOString().split("T")[0];
+</script>
+
+<script src="js/app.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Crumb & Co.</title>
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        body {
+            background: #f8f2e9;
+            min-height: 100vh;
+        }
+
+        .auth-section {
+            min-height: 80vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 50px 20px;
+        }
+
+        .auth-box {
+            width: 100%;
+            max-width: 440px;
+            background: white;
+            padding: 42px;
+            border-radius: 18px;
+            box-shadow: 0 12px 35px rgba(65, 39, 25, .1);
+        }
+
+        .auth-box h1 {
+            text-align: center;
+            color: #4b2e20;
+            margin-bottom: 10px;
+        }
+
+        .auth-subtitle {
+            text-align: center;
+            color: #887568;
+            margin-bottom: 28px;
+        }
+
+        .auth-box label {
+            display: block;
+            margin: 15px 0 7px;
+            color: #4b2e20;
+            font-weight: 600;
+        }
+
+        .auth-box input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #dfd2c5;
+            border-radius: 8px;
+            outline: none;
+            font: inherit;
+        }
+
+        .auth-box input:focus {
+            border-color: #a8754f;
+        }
+
+        .auth-box button {
+            width: 100%;
+            margin-top: 23px;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: #5b3828;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .auth-box button:hover {
+            background: #86583c;
+        }
+
+        .switch-text {
+            text-align: center;
+            margin-top: 22px;
+            color: #77665c;
+        }
+
+        .switch-text span {
+            color: #9b6845;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .auth-message {
+            text-align: center;
+            margin-top: 15px;
+            color: #47764a;
+            font-weight: 600;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="header">
+    <div class="container">
+        <a href="index.html" class="logo">Crumb <span>&</span> Co.</a>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="menu.html">Menu</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </div>
+</header>
+
+<section class="auth-section">
+    <div class="auth-box">
+
+        <!-- LOGIN -->
+        <div id="loginForm">
+            <h1>Welcome Back!</h1>
+            <p class="auth-subtitle">Sign in to your Crumb & Co. account.</p>
+
+            <form onsubmit="loginUser(event)">
+                <label>Email Address</label>
+                <input type="email" id="loginEmail" required placeholder="Enter your email">
+
+                <label>Password</label>
+                <input type="password" id="loginPassword" required placeholder="Enter your password">
+
+                <button type="submit">Login</button>
+            </form>
+
+            <p class="switch-text">
+                Don't have an account?
+                <span onclick="showRegister()">Register</span>
+            </p>
+        </div>
+
+        <!-- REGISTER -->
+        <div id="registerForm" class="hidden">
+            <h1>Create Account</h1>
+            <p class="auth-subtitle">Join the Crumb & Co. family!</p>
+
+            <form onsubmit="registerUser(event)">
+                <label>Full Name</label>
+                <input type="text" id="registerName" required placeholder="Your name">
+
+                <label>Email Address</label>
+                <input type="email" id="registerEmail" required placeholder="Your email">
+
+                <label>Password</label>
+                <input type="password" id="registerPassword" required minlength="6" placeholder="Minimum 6 characters">
+
+                <button type="submit">Create Account</button>
+            </form>
+
+            <p class="switch-text">
+                Already have an account?
+                <span onclick="showLogin()">Login</span>
+            </p>
+        </div>
+
+        <p id="authMessage" class="auth-message"></p>
+    </div>
+</section>
+
+<script>
+    function showRegister() {
+        document.getElementById("loginForm").classList.add("hidden");
+        document.getElementById("registerForm").classList.remove("hidden");
+        document.getElementById("authMessage").textContent = "";
+    }
+
+    function showLogin() {
+        document.getElementById("registerForm").classList.add("hidden");
+        document.getElementById("loginForm").classList.remove("hidden");
+        document.getElementById("authMessage").textContent = "";
+    }
+
+    function registerUser(event) {
+        event.preventDefault();
+
+        const name = document.getElementById("registerName").value.trim();
+        const email = document.getElementById("registerEmail").value.trim();
+        const password = document.getElementById("registerPassword").value;
+
+        const users = JSON.parse(localStorage.getItem("crumbUsers") || "[]");
+
+        if (users.some(user => user.email === email)) {
+            document.getElementById("authMessage").textContent =
+                "An account with this email already exists.";
+            return;
+        }
+
+        users.push({ name, email, password });
+        localStorage.setItem("crumbUsers", JSON.stringify(users));
+
+        document.getElementById("authMessage").textContent =
+            "Account created successfully! Please log in.";
+
+        document.getElementById("registerForm").reset();
+        showLogin();
+        document.getElementById("authMessage").textContent =
+            "Account created! Please log in.";
+    }
+
+    function loginUser(event) {
+        event.preventDefault();
+
+        const email = document.getElementById("loginEmail").value.trim();
+        const password = document.getElementById("loginPassword").value;
+
+        const users = JSON.parse(localStorage.getItem("crumbUsers") || "[]");
+
+        const user = users.find(
+            item => item.email === email && item.password === password
+        );
+
+        if (user) {
+            localStorage.setItem("crumbCurrentUser", JSON.stringify(user));
+            alert("Welcome to Crumb & Co., " + user.name + "!");
+            window.location.href = "index.html";
+        } else {
+            document.getElementById("authMessage").textContent =
+                "Invalid email or password. Please try again.";
+        }
+    }
+</script>
+
+</body>
+</html>

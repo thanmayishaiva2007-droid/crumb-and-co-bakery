@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders | Crumb & Co.</title>
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        body {
+            background: #faf5ed;
+            color: #493326;
+        }
+
+        .orders-page {
+            max-width: 1000px;
+            margin: 60px auto;
+            padding: 0 20px;
+            min-height: 65vh;
+        }
+
+        .orders-heading {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .orders-heading h1 {
+            font-size: 38px;
+            margin-bottom: 10px;
+        }
+
+        .orders-heading p {
+            color: #887568;
+        }
+
+        .order-card {
+            background: white;
+            border-radius: 14px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,.05);
+        }
+
+        .order-top {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            border-bottom: 1px solid #eee5dc;
+            padding-bottom: 17px;
+            margin-bottom: 18px;
+        }
+
+        .order-top h3 {
+            color: #70452f;
+        }
+
+        .order-date {
+            color: #8c786b;
+            font-size: 14px;
+        }
+
+        .status {
+            background: #e7f3e6;
+            color: #47764a;
+            padding: 7px 13px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .product-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f2ece6;
+        }
+
+        .product-name {
+            font-weight: 600;
+        }
+
+        .product-quantity {
+            color: #887568;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .order-total {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee5dc;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .empty-orders {
+            text-align: center;
+            background: white;
+            padding: 55px 20px;
+            border-radius: 14px;
+        }
+
+        .empty-orders .icon {
+            font-size: 55px;
+        }
+
+        .empty-orders h2 {
+            margin: 15px 0;
+        }
+
+        .empty-orders p {
+            color: #887568;
+            margin-bottom: 25px;
+        }
+
+        .shop-btn {
+            display: inline-block;
+            background: #5b3828;
+            color: white;
+            text-decoration: none;
+            padding: 13px 25px;
+            border-radius: 7px;
+        }
+
+        .shop-btn:hover {
+            background: #86583c;
+        }
+
+        @media(max-width: 600px) {
+            .orders-heading h1 {
+                font-size: 30px;
+            }
+
+            .order-card {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="header">
+    <div class="container">
+        <a href="index.html" class="logo">Crumb <span>&</span> Co.</a>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="menu.html">Menu</a>
+            <a href="my-orders.html">My Orders</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+            <a href="login.html">Login</a>
+        </nav>
+    </div>
+</header>
+
+<main class="orders-page">
+
+    <div class="orders-heading">
+        <p class="eyebrow">YOUR BAKERY JOURNEY</p>
+        <h1>My Orders</h1>
+        <p>All your delicious choices, together in one place.</p>
+    </div>
+
+    <div id="ordersContainer"></div>
+
+</main>
+
+<footer class="home-footer">
+    <h2>Crumb & Co.</h2>
+    <p>The Art of Baking, Made with Love.</p>
+    <br>
+    <a href="index.html">Home</a>
+    <a href="menu.html">Menu</a>
+    <a href="contact.html">Contact</a>
+    <br><br>
+    <p>© 2026 Crumb & Co. All Rights Reserved.</p>
+</footer>
+
+<script>
+    function displayMyOrders() {
+
+        const orders = JSON.parse(
+            localStorage.getItem("crumbOrders") || "[]"
+        );
+
+        const container = document.getElementById("ordersContainer");
+
+        if (orders.length === 0) {
+            container.innerHTML = `
+                <div class="empty-orders">
+                    <div class="icon">🧁</div>
+                    <h2>No Orders Yet!</h2>
+                    <p>Your delicious orders will appear here once you place them.</p>
+                    <a href="menu.html" class="shop-btn">Explore Menu</a>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = orders.slice().reverse().map((order, index) => {
+
+            const items = Array.isArray(order.items) ? order.items : [];
+
+            const productHTML = items.map(item => `
+                <div class="product-row">
+                    <div>
+                        <div class="product-name">
+                            ${escapeHTML(item.name || item.title || "Bakery Product")}
+                        </div>
+                        <div class="product-quantity">
+                            Quantity: ${Number(item.quantity || 1)}
+                        </div>
+                    </div>
+
+                    <strong>
+                        ₹${(
+                            Number(item.price || 0) *
+                            Number(item.quantity || 1)
+                        ).toLocaleString("en-IN")}
+                    </strong>
+                </div>
+            `).join("");
+
+            return `
+                <div class="order-card">
+
+                    <div class="order-top">
+                        <div>
+                            <h3>Order #${escapeHTML(String(order.id || index + 1))}</h3>
+                            <p class="order-date">
+                                ${escapeHTML(order.date || "Date not available")}
+                            </p>
+                        </div>
+
+                        <span class="status">
+                            ${escapeHTML(order.status || "Order Placed")}
+                        </span>
+                    </div>
+
+                    ${productHTML || "<p>Product details unavailable for this order.</p>"}
+
+                    <div class="order-total">
+                        <span>Total Amount</span>
+                        <span>₹${Number(order.total || 0).toLocaleString("en-IN")}</span>
+                    </div>
+
+                </div>
+            `;
+        }).join("");
+    }
+
+    function escapeHTML(value) {
+        return String(value).replace(/[&<>"']/g, char => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+        })[char]);
+    }
+
+    displayMyOrders();
+</script>
+
+</body>
+</html>

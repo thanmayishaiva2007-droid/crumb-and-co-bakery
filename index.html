@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crumb & Co. | The Art of Baking</title>
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+body{background:#faf5ed;color:#493326}
+.hero{min-height:550px;display:flex;align-items:center;padding:70px 8%;background:linear-gradient(90deg,#25160ecc,#25160e33),url("https://images.unsplash.com/photo-1509440159596-0249088772ff?w=1800") center/cover;color:white}
+.hero-content{max-width:620px}
+.hero h1{font-size:clamp(42px,6vw,76px);color:white;line-height:1.1;margin:20px 0}
+.hero p{font-size:18px;line-height:1.8;margin-bottom:25px;color:#f4e8dc}
+.btn{display:inline-block;background:#d9a878;color:#382419;padding:15px 28px;border-radius:5px;text-decoration:none;font-weight:bold}
+.offer{background:#713d2b;color:white;text-align:center;padding:30px 15px}
+.offer h2{color:#ffd69c}
+.offer p{margin:10px}
+#countdown{font-size:25px;color:#ffd69c;font-weight:bold;margin:15px}
+.offer a{display:inline-block;background:#ffd69c;color:#493326;padding:12px 25px;text-decoration:none;border-radius:6px}
+.welcome{text-align:center;padding:80px 20px;max-width:850px;margin:auto}
+.welcome h2{font-size:36px;margin:15px}
+.welcome p{line-height:1.8;color:#806d60}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:25px;padding:20px 8% 80px}
+.feature-card{background:white;padding:30px;text-align:center;border-radius:12px}
+.feature-card .icon{font-size:40px}
+.highlight,.tracking{text-align:center;padding:75px 20px;background:#503427;color:white}
+.highlight h2,.tracking h2{color:white}
+.highlight a,.tracking a{display:inline-block;background:#d9a878;color:#382419;padding:14px 25px;text-decoration:none;border-radius:6px;margin-top:15px}
+.home-footer{background:#291b14;color:white;text-align:center;padding:35px}
+.home-footer a{color:#d9a878;margin:8px;text-decoration:none;display:inline-block}
+@media(max-width:750px){.features{grid-template-columns:1fr}}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+<div class="container">
+<a href="index.html" class="logo">Crumb <span>&</span> Co.</a>
+<nav>
+<a href="index.html">Home</a>
+<a href="menu.html">Menu</a>
+<a href="my-orders.html">My Orders</a>
+<a href="delivery.html">Track Order</a>
+<a href="about.html">About</a>
+<a href="custom-order.html">Custom Cakes</a>
+<a href="contact.html">Contact</a>
+<a href="login.html">Login</a>
+</nav>
+</div>
+</header>
+
+<!-- FESTIVE OFFER -->
+<section class="offer">
+<h2>🎉 Festive Special Offer!</h2>
+<p>Enjoy 20% OFF on selected bakery products!</p>
+<p>Offer ends in:</p>
+<div id="countdown">Loading...</div>
+<a href="menu.html">Shop Now</a>
+</section>
+
+<!-- HERO -->
+<section class="hero">
+<div class="hero-content">
+<p>FRESHLY BAKED · BEAUTIFULLY MADE</p>
+<h1>The Art of Baking, Made with Love.</h1>
+<p>Discover handcrafted breads, delicious pastries, celebration cakes and little moments of happiness.</p>
+<a href="menu.html" class="btn">Explore Our Menu →</a>
+</div>
+</section>
+
+<!-- WELCOME -->
+<section class="welcome">
+<p>WELCOME TO CRUMB & CO.</p>
+<h2>A Little Happiness in Every Bite</h2>
+<p>We believe the best memories are made around good food. Every creation is prepared with quality ingredients, creativity and love.</p>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+<div class="feature-card">
+<div class="icon">🥐</div>
+<h3>Freshly Baked</h3>
+<p>Fresh breads, pastries and delicious treats.</p>
+</div>
+<div class="feature-card">
+<div class="icon">🎂</div>
+<h3>Custom Creations</h3>
+<p>Beautiful cakes for your special occasions.</p>
+</div>
+<div class="feature-card">
+<div class="icon">🤎</div>
+<h3>Made with Love</h3>
+<p>Quality ingredients and handmade baking.</p>
+</div>
+</section>
+
+<section class="highlight">
+<h2>Something Special in Mind?</h2>
+<p>Let us turn your dream cake into reality.</p>
+<a href="custom-order.html">Design Your Cake</a>
+</section>
+
+<section class="tracking">
+<h2>📦 Where Is Your Order?</h2>
+<p>Check your order details and estimated delivery time.</p>
+<a href="delivery.html">Track My Order</a>
+</section>
+
+<footer class="home-footer">
+<h2>Crumb & Co.</h2>
+<p>The Art of Baking, Made with Love.</p>
+<a href="menu.html">Menu</a>
+<a href="my-orders.html">My Orders</a>
+<a href="delivery.html">Track Order</a>
+<a href="about.html">About</a>
+<a href="contact.html">Contact</a>
+<a href="admin.html">Admin</a>
+<p>© 2026 Crumb & Co. All Rights Reserved.</p>
+</footer>
+
+<script>
+const offerEnd = new Date();
+offerEnd.setDate(offerEnd.getDate() + 3);
+
+function updateCountdown() {
+    const difference = offerEnd - new Date();
+    const display = document.getElementById("countdown");
+
+    if (difference <= 0) {
+        display.textContent = "Offer Expired!";
+        return;
+    }
+
+    const days = Math.floor(difference / 86400000);
+    const hours = Math.floor((difference / 3600000) % 24);
+    const minutes = Math.floor((difference / 60000) % 60);
+    const seconds = Math.floor((difference / 1000) % 60);
+
+    display.textContent =
+        `${days}d : ${hours}h : ${minutes}m : ${seconds}s`;
+}
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
+</script>
+
+</body>
+</html>

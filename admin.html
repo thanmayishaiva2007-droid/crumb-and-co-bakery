@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Management | Crumb & Co.</title>
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+body{background:#faf5ed;color:#493326}
+main{max-width:1100px;margin:40px auto;padding:20px}
+h1{margin-bottom:10px}
+.subtitle{color:#887568;margin-bottom:25px}
+.order-card{background:white;padding:23px;border-radius:12px;margin:20px 0;box-shadow:0 4px 15px #0000000a}
+.order-top{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.order-items{padding:15px 0;border-top:1px solid #eee;border-bottom:1px solid #eee;margin:15px 0}
+select{padding:12px;border:1px solid #ddd;border-radius:7px;margin:10px 0;width:100%;max-width:300px}
+button{background:#5b3828;color:white;border:0;padding:12px 20px;border-radius:7px;cursor:pointer}
+button:hover{background:#86583c}
+.status{font-weight:bold;color:#47764a}
+.empty{text-align:center;background:white;padding:40px;border-radius:12px;color:#887568}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+<div class="container">
+<a href="index.html" class="logo">Crumb <span>&</span> Co.</a>
+<nav>
+<a href="index.html">Home</a>
+<a href="menu.html">Menu</a>
+<a href="delivery.html">Track Order</a>
+</nav>
+</div>
+</header>
+
+<main>
+<h1>Order Management 📦</h1>
+<p class="subtitle">Manage customer orders and update delivery status.</p>
+
+<div id="ordersContainer"></div>
+</main>
+
+<script>
+const statusOptions = [
+    "Order Placed",
+    "Preparing",
+    "Dispatched",
+    "Delivered",
+    "Delivery Failed"
+];
+
+function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, c => ({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#39;"
+    })[c]);
+}
+
+function loadOrders() {
+    const orders = JSON.parse(
+        localStorage.getItem("crumbOrders") || "[]"
+    );
+
+    const container = document.getElementById("ordersContainer");
+
+    if (!orders.length) {
+        container.innerHTML = `
+            <div class="empty">
+                <h2>No orders yet!</h2>
+                <p>Customer orders will appear here.</p>
+            </div>`;
+        return;
+    }
+
+    container.innerHTML = orders.map((order, index) => {
+        const currentStatus = statusOptions.includes(order.status)
+            ? order.status
+            : "Order Placed";
+
+        const items = Array.isArray(order.items)
+            ? order.items.map(item =>
+                `${escapeHTML(item.name || item.title || "Product")} × ${Number(item.quantity || 1)}`
+              ).join("<br>")
+            : "Product details unavailable";
+
+        return `
+        <div class="order-card">
+            <div class="order-top">
+                <h2>Order #${escapeHTML(order.id || index + 1)}</h2>
+                <p class="status">${escapeHTML(currentStatus)}</p>
+            </div>
+
+            <p><strong>Customer:</strong>
+            ${escapeHTML(order.customerName || order.name || "Customer")}</p>
+
+            <div class="order-items">
+                <strong>Ordered Products:</strong><br><br>
+                ${items}
+            </div>
+
+            <p><strong>Total:</strong> ₹${Number(order.total || 0).toLocaleString("en-IN")}</p>
+
+            <label><strong>Update Delivery Status:</strong></label><br>
+
+            <select id="status-${index}">
+                ${statusOptions.map(status => `
+                    <option value="${status}"
+                        ${status === currentStatus ? "selected" : ""}>
+                        ${status}
+                    </option>
+                `).join("")}
+            </select>
+
+            <br>
+
+            <button onclick="updateStatus(${index})">
+                Save Delivery Status
+            </button>
+        </div>`;
+    }).join("");
+}
+
+function updateStatus(index) {
+    const orders = JSON.parse(
+        localStorage.getItem("crumbOrders") || "[]"
+    );
+
+    const newStatus = document.getElementById(
+        "status-" + index
+    ).value;
+
+    orders[index].status = newStatus;
+    orders[index].statusUpdatedAt = new Date().toISOString();
+
+    localStorage.setItem("crumbOrders", JSON.stringify(orders));
+
+    alert("Order status updated successfully!");
+    loadOrders();
+}
+
+loadOrders();
+</script>
+
+</body>
+</html>

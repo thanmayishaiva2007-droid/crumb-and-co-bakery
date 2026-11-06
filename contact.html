@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us | Crumb & Co.</title>
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+body{background:#faf6ef}
+.top{background:#33231e;color:white;text-align:center;padding:10px;font-size:10px;letter-spacing:2px}
+.hero{background:#ead9c8;text-align:center;padding:65px 20px}
+.hero h1{font:48px 'Playfair Display';margin:12px}
+.hero p{font-size:13px;color:#79665a}
+.contact-section{padding:65px 8%;display:grid;grid-template-columns:1fr 1.2fr;gap:45px}
+.contact-info h2,.contact-form h2{font:32px 'Playfair Display';margin-bottom:20px}
+.contact-info>p{font-size:12px;color:#88776c;line-height:1.9;margin-bottom:25px}
+.info-card{padding:18px 0;border-bottom:1px solid #e7dcd0}
+.info-card strong{font-size:12px}
+.info-card p{font-size:12px;color:#96857b;margin-top:7px}
+.contact-form{background:white;padding:32px;border:1px solid #eee5da}
+.field{margin-bottom:18px}
+.field label{display:block;font-size:11px;font-weight:700;margin-bottom:8px}
+.field input,.field textarea,.field select{width:100%;padding:14px;border:1px solid #e5dbd0;background:#faf8f4;font-size:12px;outline:none}
+.field textarea{height:130px;resize:vertical}
+.field input:focus,.field textarea:focus{border-color:#c08a5a}
+.contact-form button{width:100%;padding:16px}
+.location{background:#fffdf9;padding:50px 8%;text-align:center}
+.location h2{font:35px 'Playfair Display';margin-bottom:12px}
+.location p{font-size:12px;color:#96857b}
+.map-box{height:280px;background:#eadfd1;display:flex;align-items:center;justify-content:center;margin-top:25px;overflow:hidden}
+.map-box iframe{width:100%;height:100%;border:0}
+@media(max-width:750px){
+.contact-section{grid-template-columns:1fr;padding:40px 5%}
+.hero h1{font-size:38px}
+.contact-form{padding:22px}
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="top">WE'D LOVE TO HEAR FROM YOU ♡</div>
+
+<header>
+<a class="logo" href="index.html">crumb<span>&</span>co.</a>
+<nav>
+<a href="index.html">HOME</a>
+<a href="menu.html">MENU</a>
+<a href="about.html">OUR STORY</a>
+<a href="contact.html">CONTACT</a>
+</nav>
+<a class="btn" href="menu.html">SHOP NOW →</a>
+</header>
+
+<section class="hero">
+<div class="eyebrow">LET'S CONNECT</div>
+<h1>We'd love to hear from you.</h1>
+<p>Questions, feedback or just a little hello? We're listening.</p>
+</section>
+
+<section class="contact-section">
+
+<div class="contact-info">
+<div class="eyebrow">GET IN TOUCH</div>
+<h2>Let's have a little chat.</h2>
+<p>Whether you're planning a celebration, enquiring about an order or simply want to know more about our bakery, we're happy to help.</p>
+
+<div class="info-card">
+<strong>✉ EMAIL</strong>
+<p>hello@crumbandco.in</p>
+</div>
+
+<div class="info-card">
+<strong>☎ PHONE</strong>
+<p>+91 98765 43210</p>
+</div>
+
+<div class="info-card">
+<strong>⌖ VISIT OUR BAKERY</strong>
+<p>Crumb & Co. Artisan Bakery<br>Bengaluru, Karnataka, India</p>
+</div>
+
+<div class="info-card">
+<strong>◷ OPENING HOURS</strong>
+<p>Monday – Sunday<br>9:00 AM – 9:00 PM</p>
+</div>
+</div>
+
+<div class="contact-form">
+<div class="eyebrow">SEND US A MESSAGE</div>
+<h2>Write to us.</h2>
+
+<form onsubmit="submitContact(event)">
+
+<div class="field">
+<label>Your Name</label>
+<input type="text" name="name" placeholder="Your full name" required>
+</div>
+
+<div class="field">
+<label>Email Address</label>
+<input type="email" name="email" placeholder="Your email address" required>
+</div>
+
+<div class="field">
+<label>Subject</label>
+<select name="subject" required>
+<option value="">Choose a subject</option>
+<option>Order Enquiry</option>
+<option>Custom Cake Enquiry</option>
+<option>Product Feedback</option>
+<option>General Question</option>
+</select>
+</div>
+
+<div class="field">
+<label>Your Message</label>
+<textarea name="message" placeholder="Tell us how we can help..." required></textarea>
+</div>
+
+<button type="submit" class="btn">SEND MESSAGE →</button>
+
+</form>
+</div>
+
+</section>
+
+<section class="location">
+<div class="eyebrow">COME SAY HELLO</div>
+<h2>Find our little bakery.</h2>
+<p>Visit us for freshly baked happiness in Bengaluru.</p>
+
+<div class="map-box">
+<iframe
+src="https://www.google.com/maps?q=Bengaluru,Karnataka,India&output=embed"
+loading="lazy"
+title="Bengaluru location map">
+</iframe>
+</div>
+</section>
+
+<footer>
+<div><h3

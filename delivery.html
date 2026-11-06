@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Track Your Order | Crumb & Co.</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        body {
+            background: #faf5ed;
+            color: #493326;
+        }
+
+        .track {
+            max-width: 750px;
+            margin: 50px auto;
+            padding: 20px;
+            min-height: 65vh;
+        }
+
+        .card {
+            background: white;
+            padding: 28px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,.06);
+        }
+
+        h1 {
+            text-align: center;
+            color: #563727;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #887568;
+            margin: 12px 0 25px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            margin: 12px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #5b3828;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #86583c;
+        }
+
+        .delivery {
+            background: #f6eadc;
+            padding: 25px;
+            text-align: center;
+            border-radius: 12px;
+            margin: 22px 0;
+        }
+
+        .delivery h2 {
+            font-size: 27px;
+            color: #70452f;
+            margin: 12px 0;
+        }
+
+        .delivery p {
+            color: #887568;
+        }
+
+        .step {
+            padding: 16px;
+            border-left: 4px solid #ddd;
+            margin: 12px 0;
+            background: #faf7f2;
+        }
+
+        .active {
+            border-color: #528052;
+            background: #edf5e9;
+        }
+
+        .step p {
+            color: #887568;
+            margin-top: 5px;
+        }
+
+        .item {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .error {
+            color: #b33b32;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .today {
+            text-align: center;
+            color: #887568;
+            margin-top: 10px;
+        }
+
+        @media(max-width: 500px) {
+            .track {
+                margin: 25px auto;
+            }
+
+            .card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAVIGATION -->
+<header class="header">
+    <div class="container">
+        <a href="index.html" class="logo">
+            Crumb <span>&</span> Co.
+        </a>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="menu.html">Menu</a>
+            <a href="my-orders.html">My Orders</a>
+        </nav>
+    </div>
+</header>
+
+<!-- TRACKING PAGE -->
+<main class="track">
+
+    <div class="card">
+
+        <h1>📦 Track Your Order</h1>
+
+        <p class="subtitle">
+            Your favourite treats are on their way!
+        </p>
+
+        <p class="today" id="todayDate"></p>
+
+        <input
+            type="text"
+            id="orderId"
+            placeholder="Enter your Order ID"
+        >
+
+        <button onclick="trackOrder()">
+            Track My Order
+        </button>
+
+        <p id="error" class="error"></p>
+
+    </div>
+
+    <div id="result"></div>
+
+</main>
+
+<script>
+
+// DISPLAY TODAY'S DATE
+function displayToday() {
+
+    const now = new Date();
+
+    document.getElementById("todayDate").textContent =
+        "Today's Date: " +
+        now.toLocaleDateString("en-IN", {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+        });
+}
+
+// TRACK ORDER
+function trackOrder() {
+
+    const id = document.getElementById("orderId").value.trim();
+
+    const orders = JSON.parse(
+        localStorage.getItem("crumbOrders") || "[]"
+    );
+
+    const order = orders.find(
+        item => String(item.id) === id
+    );
+
+    const result = document.getElementById("result");
+    const error = document.getElementById("error");
+
+    result.innerHTML = "";
+    error.textContent = "";
+
+    if (!id) {
+        error.textContent = "Please enter your Order ID.";
+        return;
+    }
+
+    if (!order) {
+        error.textContent =
+            "Order not found. Please check your Order ID.";
+        return;
+    }
+
+    // ESTIMATED DELIVERY: TWO HOURS FROM NOW
+    const arrival = new Date();
+
+    arrival.setHours(arrival.getHours() + 2);
+
+    const dateText = arrival.toLocaleDateString("en-IN", {
+        weekday: "long",
+        day: "2-digit",
+        month: "long",
+        year: "numeric"
+    });
+
+    const timeText = arrival.toLocaleTimeString("en-IN", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true
+    });
+
+    // ORDER STATUS
+    const statuses = [
+        "Order Placed",
+        "Preparing",
+        "Dispatched",
+        "Delivered"
+    ];
+
+    const status = order.status || "Order Placed";
+
+    const currentIndex = statuses.indexOf(status);
+
+    const progress = statuses.map((s, i) => `
+        <div class="step ${i <= currentIndex ? "active" : ""}">
+            <strong>
+                ${i <= currentIndex ? "✓" : "○"} ${s}
+            </strong>
+
+            <p>
+                ${i === currentIndex
+                    ? "Current order status"
+                    : i < currentIndex
+                    ? "Completed"
+                    : "Waiting"}
+            </p>
+        </div>
+    `).join("");
+
+    // ORDER PRODUCTS
+    const items = Array.isArray(order.items)
+        ? order.items
+        : [];
+
+    const products = items.map(item => `
+        <div class="item">
+            <span>
+                ${escapeHTML(item.name || item.title || "Bakery Product")}
+                × ${Number(item.quantity || 1)}
+            </span>
+
+            <strong>
+                ₹${(
+                    Number(item.price || 0) *
+                    Number(item.quantity || 1)
+                ).toLocaleString("en-IN")}
+            </strong>
+        </div>
+    `).join("");
+
+    // DISPLAY EVERYTHING
+    result.innerHTML = `
+
+        <div class="card">
+
+            <h2>Order #${escapeHTML(order.id)}</h2>
+
+            <div class="delivery">
+
+                <p>🛵 YOUR ESTIMATED DELIVERY</p>
+
+                <h2>${dateText}</h2>
+
+                <h2>${timeText}</h2>
+
+                <p>Estimated arrival: 2 hours from now</p>
+
+            </div>
+
+            <h3>Ordered Items</h3>
+
+            ${products || "<p>Product details unavailable.</p>"}
+
+            <div class="item">
+                <strong>Total Amount</strong>
+
+                <strong>
+                    ₹${Number(order.total || 0).toLocaleString("en-IN")}
+                </strong>
+            </div>
+
+            <h3 style="margin-top:25px;">
+                Delivery Progress
+            </h3>
+
+            ${progress}
+
+        </div>
+    `;
+}
+
+// SAFE TEXT DISPLAY
+function escapeHTML(value) {
+
+    return String(value).replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[char]);
+
+}
+
+// INITIALIZE
+displayToday();
+
+</script>
+
+</body>
+</html>

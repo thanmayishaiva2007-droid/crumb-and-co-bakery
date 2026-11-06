@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Menu | Crumb & Co.</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+body{background:#faf6ef}
+.top{background:#33231e;color:white;text-align:center;padding:10px;font-size:10px;letter-spacing:2px}
+.page-hero{text-align:center;padding:65px 20px;background:#ead9c8}
+.page-hero h1{font:50px 'Playfair Display';margin:12px}
+.page-hero p{color:#79665a;font-size:13px}
+.menu-area{padding:55px 7%}
+.search{display:block;width:min(500px,100%);margin:0 auto 30px;padding:15px 20px;border:1px solid #e3d6c8;background:white;outline:none}
+.categories{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:35px}
+.chip{border:1px solid #dfd0c1;background:white;padding:11px 21px;border-radius:30px;cursor:pointer}
+.chip.active,.chip:hover{background:#33231e;color:white}
+.products{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.product{background:white;border:1px solid #eee5da;overflow:hidden;transition:.3s}
+.product:hover{transform:translateY(-6px)}
+.product-img{height:210px;position:relative;overflow:hidden}
+.product-img img{width:100%;height:100%;object-fit:cover}
+.tag{position:absolute;top:12px;left:12px;background:white;padding:7px;font-size:9px}
+.product-info{padding:18px}
+.product-info h3{font:19px 'Playfair Display'}
+.product-info p{font-size:11px;color:#96857b;margin:8px 0 15px}
+.product-bottom{display:flex;justify-content:space-between;align-items:center}
+.price{font-weight:700}
+.add{background:#33231e;color:white;border:0;width:36px;height:36px;font-size:21px;cursor:pointer}
+.add:hover{background:#c08a5a}
+.bag{position:fixed;bottom:25px;right:25px;background:#33231e;color:white;padding:16px 24px;border:0;border-radius:40px;z-index:10;box-shadow:0 5px 20px #0003}
+.overlay{position:fixed;inset:0;background:#0008;z-index:50;display:none;justify-content:flex-end}
+.overlay.show{display:flex}
+.drawer{background:#faf6ef;width:min(420px,100%);height:100%;padding:25px;overflow:auto}
+.drawer-head{display:flex;justify-content:space-between;margin-bottom:25px}
+.close{background:none;border:0;font-size:25px;cursor:pointer}
+.cart-item{display:flex;justify-content:space-between;gap:10px;padding:15px 0;border-bottom:1px solid #eee}
+.cart-item p{font-size:11px;color:#96857b}
+.cart-controls{display:flex;align-items:center;gap:7px}
+.cart-controls button{padding:5px 9px;border:1px solid #ddd;background:white}
+.total{display:flex;justify-content:space-between;padding:25px 0;font-weight:bold}
+.empty{padding:20px;color:#96857b;font-size:12px}
+footer{margin-top:50px}
+@media(max-width:850px){.products{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:500px){.products{gap:12px}.product-img{height:145px}.product-info{padding:12px}.page-hero h1{font-size:38px}}
+</style>
+</head>
+<body>
+
+<div class="top">FRESHLY BAKED EVERY DAY · MADE WITH LOVE ♡</div>
+
+<header>
+<a class="logo" href="index.html">crumb<span>&</span>co.</a>
+<nav>
+<a href="index.html">HOME</a>
+<a href="menu.html">MENU</a>
+<a href="about.html">OUR STORY</a>
+<a href="contact.html">CONTACT</a>
+</nav>
+<div>
+<button class="btn" onclick="openCart()">BAG (<span class="cart-count">0</span>)</button>
+</div>
+</header>
+
+<section class="page-hero">
+<div class="eyebrow">MADE FRESH. SERVED WITH LOVE.</div>
+<h1>Our Little Menu</h1>
+<p>Discover your next favourite sweet treat.</p>
+</section>
+
+<main class="menu-area">
+
+<input class="search" id="searchInput" type="search"
+placeholder="⌕  Search cakes, pastries, cookies..."
+oninput="searchProducts()">
+
+<div class="categories">
+<button class="chip active" data-category="All" onclick="filterProducts('All')">All Treats</button>
+<button class="chip" data-category="Cakes" onclick="filterProducts('Cakes')">Cakes</button>
+<button class="chip" data-category="Pastries" onclick="filterProducts('Pastries')">Pastries</button>
+<button class="chip" data-category="Breads" onclick="filterProducts('Breads')">Breads</button>
+<button class="chip" data-category="Cookies" onclick="filterProducts('Cookies')">Cookies</button>
+</div>
+
+<div class="products" id="products"></div>
+
+</main>
+
+<footer>
+<h3 class="serif">crumb&co.</h3>
+<p>Every bite tells a sweeter story. ♡</p>
+<p>hello@crumbandco.in</p>
+</footer>
+
+<button class="bag" onclick="openCart()">YOUR BAG · <span class="cart-count">0</span></button>
+
+<div class="overlay" id="cartOverlay" onclick="if(event.target===this)closeCart()">
+<div class="drawer">
+<div class="drawer-head">
+<h2 class="serif">Your Shopping Bag ♡</h2>
+<button class="close" onclick="closeCart()">×</button>
+</div>
+<div id="cartItems"></div>
+<div class="total"><span>Total</span><span id="cartTotal">₹0</span></div>
+<button class="btn" style="width:100%" onclick="checkout()">PLACE DEMO ORDER →</button>
+<p class="empty">Demo checkout only. No real payment is collected.</p>
+</div>
+</div>
+
+<script src="js/products.js"></script>
+
+<script src="js/app.js"></script>
+
+</body>
+</html>
