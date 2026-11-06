@@ -135,4 +135,6 @@ Built with ❤️ using **HTML, CSS and JavaScript**.
 ## 🔗 Live Demo & Project Links
 
 🌐 **Live Demo:** 
+ https://thanmayishaiva2007-droid.github.io/crumb-and-co-bakery/
+ 
 
